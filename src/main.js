@@ -167,6 +167,51 @@ class Item {
   fall() {
     this.y += this.dy;
   }
+
+  hitBottom() {
+    return (this.y + this.dy > game.canvas.height - this.heigth);
+  }
+
+  hitPaddle() {
+    if (this.hitBottom() && (this.x > paddle.x && this.x < paddle.x + paddle.width)) {
+      this.action();
+      touchedItems.shift();
+    } else if (this.hitBottom()) {
+      touchedItems.shift();
+    }
+  }
+
+  action() {
+    switch (this.name) {
+      case 'slow': 
+        ball.dx *= 0.8;
+        ball.dy *= 0.8;
+        break;
+      case 'fast': 
+        ball.dx *= 1.05;
+        ball.dy *= 1.05;
+        break;
+      case 'heart':
+        game.lives += 1;
+        break;
+      case 'shrink': 
+        paddle.width -= 20;
+        break;
+      case 'enlarge':
+        paddle.width += 50;
+        break;
+      case '100':
+        game.score += 100;
+        break;
+      case '250':
+        game.score += 250;
+        break;
+      case '500':
+        game.score += 500;
+        break;
+      default:
+    }
+  }
 }
 
 const bounceSound = new Sound('../audio/bounce.wav');
@@ -250,6 +295,7 @@ function drawAllItems() {
       }
       item.draw();
       item.fall();
+      item.hitPaddle();
     });
   }
 }
