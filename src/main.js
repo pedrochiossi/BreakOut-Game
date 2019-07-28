@@ -4,7 +4,8 @@ const items = ['balls', 'enlarge', 'shrink', 'fire', 'laser', 'fast', '100', '50
 const bricks = [];
 const touchedItems = [];
 const container = document.getElementById('canvas-container');
-
+let grays = 0;
+let inactives = 0;
 const game = {
   canvas: document.createElement('canvas'),
   start() {
@@ -18,6 +19,13 @@ const game = {
 
   clear() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  },
+
+  checkifWin() {
+    if (bricks.length * bricks[0].length === grays + inactives) {
+      alert('YOU WIN! CONGRATULATIONS!');
+      document.location.reload();
+    }
   },
 };
 
@@ -172,6 +180,9 @@ function createBricks(columns, rows) {
     bricks[i] = [];
     for (let j = 0; j < rows; j += 1) {
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      if (randomColor === 'gray') {
+        grays += 1;
+      }
       bricks[i][j] = new Brick(randomColor);
     }
   }
@@ -205,31 +216,20 @@ function checkCollision(columns, rows) {
   for (let i = 0; i < columns; i += 1) {
     for (let j = 0; j < rows; j += 1) {
       const brick = bricks[i][j];
-      let cnt;
       if (brick.status === 1) {
         // condition when ball colides with brick
         if (ball.x > brick.x && ball.x < (brick.x + brick.width) && ball.y > brick.y && ball.y < (brick.y + brick.height)) {
           ball.dy = -ball.dy;
+          ball.dx *= 1.02;
+          ball.dy *= 1.02;
           // gray bricks stays in the canvas, only reflects the ball and don't increase the score.
-          if (brick.color === 'gray') {
-            // reflects the ball with higher speed.
-            ball.dx *= 1.05;
-            ball.dy *= 1.05;
-            cnt += 1;
-          } else {
-            // other bricks also reflects the ball with a slight speed increase.
-            ball.dx *= 1.02;
-            ball.dy *= 1.02;
-            // sets status to 0 so it doesn't get drawn on drawBricks().
+          if (brick.color !== 'gray') {
             brick.status = 0;
+            inactives += 1;
             game.score += 10;
           }
         }
-        if (game.score >= 10 * ((columns * rows)-cnt)) {
-          alert('YOU WIN, CONGRATULATIONS!');
-          document.location.reload();
-        }
-        // Items get drawn and dropped in the canvas when brick status is 0 and brick.item !== none.
+      // Items get drawn and dropped in the canvas when brick status is 0 and brick.item !== none.
       } else if (brick.item !== 'none' && brick.droppedItem === false) {
         brick.item.x = brick.x;
         brick.item.y = brick.y;
@@ -277,6 +277,7 @@ function updateGame() {
   paddle.draw();
   ball.draw();
   checkCollision(14, 5);
+  game.checkifWin();
   drawAllItems();
   drawScore();
   drawLives();
