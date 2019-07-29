@@ -116,7 +116,7 @@ class Brick {
   draw() {
     const ctx = game.context;
     const brickImg = new Image();
-    brickImg.src = `/images/${this.color}-tile.png`;
+    brickImg.src = `./images/${this.color}-tile.png`;
     ctx.drawImage(brickImg, this.x, this.y, this.width, this.height);
   }
 }
@@ -134,7 +134,7 @@ class Item {
   draw() {
     const ctx = game.context;
     const itemImg = new Image();
-    itemImg.src = `/images/item-${this.name}.png`;
+    itemImg.src = `./images/item-${this.name}.png`;
     ctx.drawImage(itemImg, this.x, this.y, this.width, this.heigth);
   }
 
@@ -283,7 +283,7 @@ function drawScore() {
 function drawLives() {
   const ctx = game.context;
   const heart = new Image();
-  heart.src = '/images/item-heart.png';
+  heart.src = './images/item-heart.png';
   for (let i = 1; i <= game.lives; i += 1) {
     ctx.drawImage(heart, game.canvas.width - ((i * 30) + 10), 5, 25, 25);
   }
