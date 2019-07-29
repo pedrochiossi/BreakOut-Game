@@ -6,6 +6,7 @@ const touchedItems = [];
 const container = document.getElementById('canvas-container');
 let grays = 0;
 let inactives = 0;
+
 const game = {
   canvas: document.createElement('canvas'),
   start() {
@@ -79,15 +80,12 @@ class Ball {
     const right = (this.x + this.dx > game.canvas.width - this.radius);
     if (top) {
       this.dy = -this.dy;
-      bounceSound.play();
     }
     if (left || right) {
       this.dx = -this.dx;
-      bounceSound.play();
-    } 
+    }
     if ((this.x > paddle.x && this.x < paddle.x + paddle.width) && (this.y + this.dy > game.canvas.height - this.radius - paddle.height)) {
       this.dy = -this.dy;
-      bounceSound.play();
     }
     if (bottom) {
       game.lives -= 1;
@@ -98,29 +96,6 @@ class Ball {
         this.reset();
       }
     }
-  }
-}
-
-class Sound {
-  constructor(src) {
-    this.sound = document.createElement('audio');
-    this.sound.src = src;
-    this.sound.setAttribute('preload', 'auto');
-    this.sound.setAttribute('controls', 'none');
-    this.sound.style.display = 'none';
-    document.body.appendChild(this.sound);
-  }
-  
-  play() {
-    this.sound.play();
-  }
-
-  stop() {
-    this.sound.pause();
-  }
-
-  playback(speed) {
-    this.sound.playbackRate = speed;
   }
 }
 
@@ -214,8 +189,7 @@ class Item {
   }
 }
 
-const bounceSound = new Sound('../audio/bounce.wav');
-bounceSound.playback(2.5);
+
 const ball = new Ball();
 const paddle = new Paddle();
 
