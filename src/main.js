@@ -1,4 +1,3 @@
-
 const colors = ['green', 'blue', 'purple', 'red', 'orange', 'lemon', 'brown', 'aqua', 'yellow','gray'];
 const items = ['balls', 'enlarge', 'shrink', 'fire', 'laser', 'fast', '100', '500', '250', 'slow', 'heart'];
 const bricks = [];
