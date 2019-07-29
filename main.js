@@ -5,12 +5,15 @@ const touchedItems = [];
 const container = document.getElementById('canvas-container');
 let grays = 0;
 let inactives = 0;
+const keys = {};
 
 const game = {
   canvas: document.createElement('canvas'),
   start() {
     this.canvas.width = window.innerWidth - 200;
     this.canvas.height = window.innerHeight - 100;
+    this.brickColumns = Math.floor((this.canvas.width - 52) / 83);
+    this.brickRows = 5;
     this.context = this.canvas.getContext('2d');
     container.insertBefore(this.canvas, container.childNodes[0]);
     this.score = 0;
@@ -40,6 +43,15 @@ class Paddle {
     const ctx = game.context;
     ctx.fillStyle = '#0095DD';
     ctx.fillRect(this.x, game.canvas.height - this.height, this.width, this.height);
+  }
+
+  // Moves when the left and right keys are pressed
+  move() {
+    if (keys[39] && (this.x < game.canvas.width - this.width)) {
+      this.x += 15;
+    } else if (keys[37] && this.x > 0) {
+      this.x -= 15;
+    }
   }
 }
 
@@ -192,11 +204,11 @@ class Item {
 const ball = new Ball();
 const paddle = new Paddle();
 
-function createBricks(columns, rows) {
+function createBricks() {
   // creates a 2D array of choosen size and populates it with bricks of random colors.
-  for (let i = 0; i < columns; i += 1) {
+  for (let i = 0; i < game.brickColumns; i += 1) {
     bricks[i] = [];
-    for (let j = 0; j < rows; j += 1) {
+    for (let j = 0; j < game.brickRows; j += 1) {
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
       if (randomColor === 'gray') {
         grays += 1;
@@ -207,16 +219,16 @@ function createBricks(columns, rows) {
   // populates 7 random bricks with random items
   for (let n = 0; n <= 7; n += 1) {
     const randomItem = items[Math.floor(Math.random() * items.length)];
-    const randomRow = Math.floor(Math.random() * rows);
-    const randomColumn = Math.floor(Math.random() * columns);
+    const randomRow = Math.floor(Math.random() * game.brickRows);
+    const randomColumn = Math.floor(Math.random() * game.brickColumns);
     bricks[randomColumn][randomRow].item = new Item(randomItem);
   }
 }
 
 // Draws all bricks from the bricks array on the canvas.
-function drawBricks(columns, rows) {
-  for (let i = 0; i < columns; i += 1) {
-    for (let j = 0; j < rows; j += 1) {
+function drawBricks() {
+  for (let i = 0; i < game.brickColumns; i += 1) {
+    for (let j = 0; j < game.brickRows; j += 1) {
       const brickX = (i * (bricks[i][j].width + bricks[i][j].padding)) + bricks[i][j].offsetLeft;
       const brickY = (j * (bricks[i][j].height + bricks[i][j].padding)) + bricks[i][j].offsetTop;
       bricks[i][j].x = brickX;
@@ -230,9 +242,9 @@ function drawBricks(columns, rows) {
 }
 
 // Checks if any brick in the bricks array colides with the ball.
-function checkCollision(columns, rows) {
-  for (let i = 0; i < columns; i += 1) {
-    for (let j = 0; j < rows; j += 1) {
+function checkCollision() {
+  for (let i = 0; i < game.brickColumns; i += 1) {
+    for (let j = 0; j < game.brickRows; j += 1) {
       const brick = bricks[i][j];
       if (brick.status === 1) {
         // condition when ball colides with brick
@@ -292,10 +304,11 @@ function drawLives() {
 // Main function to draw and update the game using requestAnimationFrame
 function updateGame() {
   game.clear();
-  drawBricks(14, 5);
+  drawBricks();
   paddle.draw();
+  paddle.move();
   ball.draw();
-  checkCollision(14, 5);
+  checkCollision();
   game.checkifWin();
   drawAllItems();
   drawScore();
@@ -303,9 +316,13 @@ function updateGame() {
   requestAnimationFrame(updateGame);
 }
 
-game.start();
-createBricks(14,5);
-updateGame();
+
+window.onload = () => {
+  game.start();
+  createBricks();
+  updateGame();
+};
+
 
 // User can move the paddle with mouse pointer.
 document.onmousemove = (e) => {
@@ -316,10 +333,12 @@ document.onmousemove = (e) => {
 };
 
 // User can move the paddle with keyboard right and left arrows.
+
+// keydown and keyup listeners that add pressed key to keys object.
 document.onkeydown = (e) => {
-  if ((e.key === 'Right' || e.key === 'ArrowRight') && paddle.x < game.canvas.width - paddle.width) {
-    paddle.x += 30;
-  } else if ((e.key === 'Left' || e.key === 'ArrowLeft') && paddle.x > 0) {
-    paddle.x -= 30;
-  }
+  keys[e.which] = true;
+};
+
+document.onkeyup = (e) => {
+  delete keys[e.which];
 };
