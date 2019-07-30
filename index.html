@@ -5,10 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <title>BreakOut-Game</title>
 </head>
 <body>
-  <div id="canvas-container"></div>
+  <div id="presentation">
+    <h1>BreakOut</h1>
+    <h3>The famous, classic, brick-breaking game.</h3>
+    <div class="bricks">
+      <img src="images/aqua-tile.png" width="100" height="40">
+      <img src="images/gray-tile-crack.png" width="100" height="40">
+      <img src="images/red-tile.png" width="100" height="40">
+      <img src="images/yellow-tile-crack.png" width="100" height="40">
+      <img src="images/green-tile.png" width="100" height="40">
+      <img src="images/blue-tile.png" width="100" height="40">
+      <img src="images/lemon-tile-crack.png" width="100" height="40">
+      <img src="images/purple-tile.png" width="100" height="40">
+      <img src="images/orange-tile.png" width="100" height="40">
+      <img src="images/brown-tile-crack.png" width="100" height="40">
+      <img src="images/blue-tile-crack.png" width="100" height="40">
+    </div>
+    <div id="instructions">
+      <h4>How to Play?</h4>
+      <hr>
+      <p>It's simple:</p>
+      <ul>
+        <li>Control the paddle with the keyboard left and right arrow keys, or the mouse pointer.</li>
+        <li>Try to bounce the ball back to break all bricks.</li>
+        <li>Catch or avoid any items that fall in your way.</li>
+        <li>Don't let the ball hit the bottom or you will lose your lives.</li>
+      </ul>
+      <h4>Hints</h4>
+      <hr>
+      <ul>
+        <li>Watch out! The ball gets faster as it hits the bricks.</li>
+        <li>Gray bricks never break they are metallic.</li>
+        <li>You can increase your score with some items.</li>
+        <li>Have Fun!</li>
+      </ul>
+    </div>
+    <div class="center"><button class="btn btn-primary btn-lg" id="play-button" type="button">Play Now!</button></div>
+  </div>
+  <div id="canvas-container" class="hidden"></div>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
   <script type="text/javascript" src="./main.js" ></script>
 </body>
 </html>

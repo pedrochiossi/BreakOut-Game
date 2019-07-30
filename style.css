@@ -1,8 +1,49 @@
+@font-face {
+  font-family: 'squirkregular';
+  src: url('./squirk-rmvv-webfont.woff');
+}
+
+
 * {
   padding: 0;
   margin: 0;
 }
 
+h1, h3 {
+  text-align: center;
+}
+
+.bricks {
+  padding: 30px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: black;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+  
+
+#presentation {
+  width: 80%;
+  height: 750px;
+  margin: 0 auto;
+}
+
+#presentation h1 {
+  font-size: 60pt;
+  font-family: 'squirkregular';
+  color: rgb(33, 68, 223);
+}
+
+#instructions {
+  padding-top: 50px;
+  width: 80%;
+  margin: 0 auto;
+}
 
 #canvas-container {
   width: 100%;
@@ -10,6 +51,9 @@
   position: relative;
 }
 
+.hidden {
+  display: none;
+}
 
 canvas {
   background-color: black;

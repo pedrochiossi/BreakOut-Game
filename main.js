@@ -1,4 +1,4 @@
-const colors = ['green', 'blue', 'purple', 'red', 'orange', 'lemon', 'brown', 'aqua', 'yellow','gray'];
+const colors = ['green', 'blue', 'purple', 'red', 'orange', 'lemon', 'brown', 'aqua', 'yellow', 'gray'];
 const items = ['balls', 'enlarge', 'shrink', 'fire', 'laser', 'fast', '100', '500', '250', 'slow', 'heart'];
 const bricks = [];
 const touchedItems = [];
@@ -6,6 +6,8 @@ const container = document.getElementById('canvas-container');
 let grays = 0;
 let inactives = 0;
 const keys = {};
+const startButton = document.getElementById('play-button');
+const presentation = document.getElementById('presentation');
 
 const game = {
   canvas: document.createElement('canvas'),
@@ -63,13 +65,14 @@ class Ball {
     this.dx = 4;
     this.dy = 4;
     this.radius = 8;
+    this.color = 'white';
   }
 
   draw() {
     const ctx = game.context;
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = this.color;
     ctx.fill();
     ctx.closePath();
     this.x += this.dx;
@@ -195,6 +198,12 @@ class Item {
       case '500':
         game.score += 500;
         break;
+      case 'fire':
+        ball.color = 'red';
+        setTimeout(() => {
+          ball.color = 'white';
+        }, 6000);
+        break;
       default:
     }
   }
@@ -249,7 +258,9 @@ function checkCollision() {
       if (brick.status === 1) {
         // condition when ball colides with brick
         if (ball.x > brick.x && ball.x < (brick.x + brick.width) && ball.y > brick.y && ball.y < (brick.y + brick.height)) {
-          ball.dy = -ball.dy;
+          if (ball.color !== 'red') {
+            ball.dy = -ball.dy;
+          }
           ball.dx *= 1.02;
           ball.dy *= 1.02;
           // gray bricks stays in the canvas, only reflects the ball and don't increase the score.
@@ -317,12 +328,13 @@ function updateGame() {
 }
 
 
-window.onload = () => {
+startButton.onclick = () => {
+  presentation.classList.add('hidden');
+  container.classList.remove('hidden');
   game.start();
   createBricks();
   updateGame();
 };
-
 
 // User can move the paddle with mouse pointer.
 document.onmousemove = (e) => {
