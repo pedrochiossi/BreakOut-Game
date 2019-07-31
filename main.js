@@ -2,6 +2,7 @@ const colors = ['green', 'blue', 'purple', 'red', 'orange', 'lemon', 'brown', 'a
 const items = ['balls', 'enlarge', 'shrink', 'fire', 'laser', 'fast', '100', '500', '250', 'slow', 'heart'];
 const bricks = [];
 const touchedItems = [];
+const scores = [];
 const container = document.getElementById('canvas-container');
 let grays = 0;
 let inactives = 0;
@@ -11,9 +12,7 @@ const restartButton = document.getElementById('restart-button');
 const cancelButton = document.getElementById('cancel-button');
 const modalHeader = document.getElementsByClassName('modal-header');
 const presentation = document.getElementById('presentation');
-const modalTitle = document.getElementById('title');
 const modalBody = document.getElementsByClassName('modal-body');
-console.log(modalBody[0]);
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioContext();
 let requestId;
@@ -104,6 +103,7 @@ const game = {
   stop() {
     window.cancelAnimationFrame(requestId);
     stopGame = true;
+    scores.push(this.score);
   },
 
   restart() {
@@ -120,7 +120,12 @@ const game = {
     if (bricks.length * bricks[0].length === grays + inactives) {
       game.stop();
       modalHeader[0].children[0].innerText = 'YOU WIN! CONGRATULATIONS!';
-      modalBody[0].children[0].innerText = 'You are really good at this. Feel free to win it again!';
+
+      modalBody[0].innerHTML = `
+      <p>You are really good at this. Feel free to play again!</p>
+      <p>Your score: <strong>${game.score}</strong></p>
+      <p> Highest score: <strong>${Math.max(...scores)}</strong></p>`
+
       $('#modal-result').modal();
     }
   },
@@ -149,6 +154,8 @@ class Paddle {
     }
   }
 }
+
+const paddle = new Paddle();
 
 
 class Ball {
@@ -201,6 +208,13 @@ class Ball {
       game.lives -= 1;
       if (game.lives < 1) {
         game.stop();
+        modalHeader[0].children[0].innerText = 'GAME OVER!';
+
+        modalBody[0].innerHTML = `
+        <p>You lost all your lives, dont worry, try it again!</p>
+        <p>Your score: <strong>${game.score}</strong></p>
+        <p> Highest score: <strong>${Math.max(...scores)}</strong></p>`;
+
         $('#modal-result').modal();
       } else {
         this.reset();
@@ -208,6 +222,8 @@ class Ball {
     }
   }
 }
+
+const ball = new Ball();
 
 class Brick {
   constructor(color) {
@@ -409,9 +425,6 @@ function drawLives() {
     ctx.drawImage(heart, game.canvas.width - ((i * 30) + 10), 5, 25, 25);
   }
 }
-
-const ball = new Ball();
-const paddle = new Paddle();
 
 // Main function to draw and update the game using requestAnimationFrame
 function updateGame() {
