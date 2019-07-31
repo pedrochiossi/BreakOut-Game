@@ -26,6 +26,10 @@ h1, h3 {
   justify-content: center;
 }
   
+.modal-footer {
+  display: flex;
+  justify-content: center;
+}
 
 #presentation {
   width: 80%;
