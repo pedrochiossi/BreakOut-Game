@@ -214,7 +214,7 @@ class Ball {
         <p>Your score: <strong>${game.score}</strong></p>
         <p> Highest score: <strong>${Math.max(...scores)}</strong></p>`;
         $('#modal-result').modal({
-          backdrop: 'static',
+          backdrop: false,
         });
       } else {
         this.reset();
