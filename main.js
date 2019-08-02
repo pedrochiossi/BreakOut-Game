@@ -124,9 +124,7 @@ const game = {
       <p>You are really good at this. Feel free to play again!</p>
       <p>Your score: <strong>${game.score}</strong></p>
       <p> Highest score: <strong>${Math.max(...scores)}</strong></p>`;
-      $('#modal-result').modal({
-        backdrop: 'static',
-      });
+      $('#modal-result').modal();
     }
   },
 };
@@ -213,9 +211,7 @@ class Ball {
         <p>You lost all your lives, dont worry, try it again!</p>
         <p>Your score: <strong>${game.score}</strong></p>
         <p> Highest score: <strong>${Math.max(...scores)}</strong></p>`;
-        $('#modal-result').modal({
-          backdrop: false,
-        });
+        $('#modal-result').modal();
       } else {
         this.reset();
       }
@@ -442,7 +438,6 @@ function updateGame() {
     requestId = window.requestAnimationFrame(updateGame);
   }
 }
-
 
 startButton.onclick = () => {
   presentation.classList.add('hidden');
