@@ -3,10 +3,12 @@ const items = ['balls', 'enlarge', 'shrink', 'fire', 'laser', 'fast', '100', '50
 const bricks = [];
 const touchedItems = [];
 const scores = [];
-const container = document.getElementById('canvas-container');
+const keys = {};
 let grays = 0;
 let inactives = 0;
-const keys = {};
+let requestId;
+let stopGame = false;
+const container = document.getElementById('canvas-container');
 const startButton = document.getElementById('play-button');
 const restartButton = document.getElementById('restart-button');
 const cancelButton = document.getElementById('cancel-button');
@@ -15,8 +17,6 @@ const presentation = document.getElementById('presentation');
 const modalBody = document.getElementsByClassName('modal-body');
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioContext();
-let requestId;
-let stopGame = false;
 
 // BufferLoader to load all sound effects.
 class BufferLoader {
@@ -120,13 +120,13 @@ const game = {
     if (bricks.length * bricks[0].length === grays + inactives) {
       game.stop();
       modalHeader[0].children[0].innerText = 'YOU WIN! CONGRATULATIONS!';
-
       modalBody[0].innerHTML = `
       <p>You are really good at this. Feel free to play again!</p>
       <p>Your score: <strong>${game.score}</strong></p>
-      <p> Highest score: <strong>${Math.max(...scores)}</strong></p>`
-
-      $('#modal-result').modal();
+      <p> Highest score: <strong>${Math.max(...scores)}</strong></p>`;
+      $('#modal-result').modal({
+        backdrop: 'static',
+      });
     }
   },
 };
@@ -209,13 +209,13 @@ class Ball {
       if (game.lives < 1) {
         game.stop();
         modalHeader[0].children[0].innerText = 'GAME OVER!';
-
         modalBody[0].innerHTML = `
         <p>You lost all your lives, dont worry, try it again!</p>
         <p>Your score: <strong>${game.score}</strong></p>
         <p> Highest score: <strong>${Math.max(...scores)}</strong></p>`;
-
-        $('#modal-result').modal();
+        $('#modal-result').modal({
+          backdrop: 'static',
+        });
       } else {
         this.reset();
       }
